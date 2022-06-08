@@ -2,17 +2,18 @@ import java.util.ArrayList;
 
 public abstract class Agent {
 	ArrayList<Card> hand = new ArrayList<Card>();
+	ArrayList<Card> playableHand = new ArrayList<Card>();
 	
 	
 	public void drawCard(Card c){
 		hand.add(c);
 	}
 	
-	public void playCard(Card c) {
-		hand.remove(hand.indexOf(c));
-	}
 	
-	public abstract Card decideCard();
+	
+	public Card decideCard(Card inPlay) {
+		return null;
+	}
 
 	protected abstract ArrayList<Card> getHand();
 }

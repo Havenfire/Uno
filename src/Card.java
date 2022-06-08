@@ -2,31 +2,28 @@
 public class Card {
 
 	
-	int vNum = -1;
-	String vSpec = null;
+	String cVal = null;
 	String color = null;
 	
-	Card(int newValue, String newColor){
-		vNum = newValue;
-		color = newColor;
-	}
-	
 	Card(String newValue, String newColor){
-		vSpec = newValue;
+		cVal = newValue;
 		color = newColor;
 	}
 	
+	public boolean canPlay(Card inPlay) {
 	
+		if(this.cVal == inPlay.cVal || this.color == inPlay.color){
+			return true;
+		}
+		return false;
+	}
 	
 	
 	
 	
 	public String toString() {
-		if(vNum == -1) {
-			return vSpec + " " + color; 
-		}
-		
-		return vNum + " " + color;
+			
+		return cVal + " " + color;
 		
 	}
 	
