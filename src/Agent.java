@@ -14,6 +14,9 @@ public abstract class Agent {
 	public Card decideCard(Card inPlay) {
 		return null;
 	}
+	public Card playCard() {
+		return null;
+	}
 
 	protected abstract ArrayList<Card> getHand();
 }

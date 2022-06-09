@@ -5,6 +5,7 @@ public class GameBoard {
 
 	private static final int STARTING_HAND_SIZE = 7;
 	ArrayList<Card> deck = new ArrayList<Card>();
+	ArrayList<Card> discard = new ArrayList<Card>();
 	final String[] cardNumberTypes = {"1","2","3","4","5","6","7","8","9"};
 	final String[] cardColors = {"red","yellow","green","blue"};	
 	int playerCount;
@@ -37,33 +38,44 @@ public class GameBoard {
 	
 	public void startGame() {
 		inPlay = dealCard();
+		discard.add(inPlay);
 		System.out.println("First Card is " + inPlay);
 		gameColor = inPlay.color;
 		gameVal = inPlay.cVal;
 		Card playerCard;
 
 		while(!gameOver) {
+
+			//all players take a turn
 			for(int i = 0; i < playerCount; i++) {
-				System.out.println(playerTurn[i].getHand());
-				
 
-				playerCard = playerTurn[i].decideCard(inPlay);
-				if(playerCard == null){
-					playerTurn[i].drawCard(dealCard());;
-				}
-
-			}
-			
-			
-			
-			for(int j = 0; j < playerCount; j++) {
-				if(playerTurn[j].hand.size() == 0) {
+				//checks if a player has won
+				if(playerTurn[i].hand.size() == 0) {
 					gameOver = true;
-					System.out.println("Player Number " + j + " has won!");
+					System.out.println("Player Number " + i + " has won!");
 				}
+				System.out.println(playerTurn[i].getHand());
+
+				//player plays a card OR draws
+				playerCard = playerTurn[i].decideCard(inPlay);
+
+				//Cannot play, draws a card
+				if(playerCard == null){
+					playerTurn[i].drawCard(dealCard());
+					System.out.println("Player Number " + i + " drew a " + "card");
+				} else {
+					//Plays a card
+					System.out.println(playerTurn[i].playCard());
+					System.out.println("Player Number " + i + " played a " + playerCard);
+					inPlay = playerCard;
+					discard.add(inPlay);
+					gameColor = playerCard.color;
+					gameVal = playerCard.cVal;
+				}
+
 			}
 			
-			
+		
 		}
 	}
 	
@@ -80,19 +92,21 @@ public class GameBoard {
 				deck.add(new Card(cardNumberTypes[j], cardColors[i]));
 			}		
 			deck.add(new Card("0", cardColors[i]));
-			deck.add(new Card("skip", cardColors[i]));
-			deck.add(new Card("skip", cardColors[i]));
-			deck.add(new Card("draw2", cardColors[i]));
-			deck.add(new Card("draw2", cardColors[i]));
-			deck.add(new Card("reverse", cardColors[i]));
-			deck.add(new Card("reverse", cardColors[i]));
-			deck.add(new Card("wildCard", "black"));
-			deck.add(new Card("draw4", "black"));			
+			// deck.add(new Card("skip", cardColors[i]));
+			// deck.add(new Card("skip", cardColors[i]));
+			// deck.add(new Card("draw2", cardColors[i]));
+			// deck.add(new Card("draw2", cardColors[i]));
+			// deck.add(new Card("reverse", cardColors[i]));
+			// deck.add(new Card("reverse", cardColors[i]));
+			// deck.add(new Card("wildCard", "black"));
+			// deck.add(new Card("draw4", "black"));			
 		}
 		
 	}
 	
 	private void shuffleDeck() {
+		deck.addAll(discard);
+		discard.clear();
 		Collections.shuffle(deck);
 	}
 
