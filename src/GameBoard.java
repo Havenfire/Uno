@@ -17,9 +17,9 @@ public class GameBoard {
 	
 	
 	GameBoard(int newPlayerCount){
-		// if(newPlayerCount > 8 || newPlayerCount < 2) {
-		// 	throw new Error("Check Number of Players");
-		// }
+		if(newPlayerCount > 8 || newPlayerCount < 2) {
+			throw new Error("Check Number of Players");
+		}
 		
 		playerCount = newPlayerCount;
 	}
@@ -27,7 +27,7 @@ public class GameBoard {
 	public void initialize() {
 		playerTurn = new Agent[playerCount];
 		for(int i = 0; i < playerCount; i++) {
-			RandomAgent r = new RandomAgent(0);
+			RandomAgent r = new RandomAgent(i);
 			playerTurn[i] = r;			
 		}
 		
@@ -53,19 +53,25 @@ public class GameBoard {
 				if(playerTurn[i].hand.size() == 0) {
 					gameOver = true;
 					System.out.println("Player Number " + i + " has won!");
+					break;
 				}
 				System.out.println(playerTurn[i].getHand());
 
 				//player plays a card OR draws
-				playerCard = playerTurn[i].decideCard(inPlay);
+				System.out.println("Current Board Values: " + gameVal + " " + gameColor);
+				playerCard = ((RandomAgent)playerTurn[i]).playCard(gameVal,gameColor);
 
 				//Cannot play, draws a card
 				if(playerCard == null){
 					playerTurn[i].drawCard(dealCard());
 					System.out.println("Player Number " + i + " drew a " + "card");
+					if(deck.size() == 0){
+						shuffleDeck();
+						System.out.println("Deck has been shuffled");
+					}
+
 				} else {
 					//Plays a card
-					System.out.println(playerTurn[i].playCard());
 					System.out.println("Player Number " + i + " played a " + playerCard);
 					inPlay = playerCard;
 					discard.add(inPlay);

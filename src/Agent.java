@@ -9,15 +9,6 @@ public abstract class Agent {
 		hand.add(c);
 	}
 	
-	
-	
-	public Card decideCard(Card inPlay) {
-		return null;
-	}
-	public Card playCard() {
-		return null;
-	}
-
 	protected abstract ArrayList<Card> getHand();
 }
 

@@ -7,21 +7,7 @@ public class RandomAgent extends Agent{
 	RandomAgent(int newPlayerNum){
 		playerNum = newPlayerNum;
 	}
-	Card plannedCard;
 
-	public Card decideCard(Card inPlay) {
-		for(int i = 0; i < hand.size(); i++){
-			if(hand.get(i).canPlay(inPlay)){
-				playableHand.add(hand.get(i));
-			}
-		}
-		if(playableHand.size() == 0){
-			return null;
-		}
-		plannedCard = playableHand.get((int) (Math.random() * playableHand.size()));
-
-		return plannedCard;
-	}
 
 	public int getPlayerNum(){
 		return playerNum;
@@ -32,15 +18,24 @@ public class RandomAgent extends Agent{
 		
 	}
 
-	public Card playCard(Card c) {
-		return hand.remove(hand.indexOf(c));
+	//
+	public Card playCard(String currentVal, String currentColor) {
+		for(int i = 0; i < hand.size(); i++){
+			if(hand.get(i).cVal.equals(currentVal) || hand.get(i).color.equals(currentColor)){
+				playableHand.add(hand.get(i));
+			}
+
+		}
+		if(playableHand.size() == 0){
+			return null;
+		}
+		Card playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
+		hand.remove(hand.indexOf(playedCard));
+		playableHand.clear();
+
+		return playedCard;
 	}
 	
-	public Card playCard() {
-		Card x = hand.remove(hand.indexOf(plannedCard));
-		plannedCard = null;
-		return x;
-	}
 	
 	
 }
