@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -14,7 +15,11 @@ public class GameBoard {
 	boolean gameOver = false;
 	String gameColor;
 	String gameVal;
-	
+	int gameDirection = 1;
+	int currentTurn = Integer.MAX_VALUE;
+	int victim;
+	Card inQuestion;
+	int numberOfTurns = 0;
 	
 	GameBoard(int newPlayerCount){
 		if(newPlayerCount > 8 || newPlayerCount < 2) {
@@ -24,7 +29,7 @@ public class GameBoard {
 		playerCount = newPlayerCount;
 	}
 	
-	public void initialize() {
+	public void initialize() throws Exception {
 		playerTurn = new Agent[playerCount];
 		for(int i = 0; i < playerCount; i++) {
 			RandomAgent r = new RandomAgent(i);
@@ -36,7 +41,7 @@ public class GameBoard {
 		dealHands();
 	}
 	
-	public void startGame() {
+	public void startGame() throws Exception {
 		inPlay = dealCard();
 		discard.add(inPlay);
 		System.out.println("First Card is " + inPlay);
@@ -44,50 +49,140 @@ public class GameBoard {
 		gameVal = inPlay.cVal;
 		Card playerCard;
 
+
 		while(!gameOver) {
 
-			//all players take a turn
-			for(int i = 0; i < playerCount; i++) {
+			
+			// //all players take a turn
 
-				//checks if a player has won
-				if(playerTurn[i].hand.size() == 0) {
-					gameOver = true;
-					System.out.println("Player Number " + i + " has won!");
-					break;
-				}
-				System.out.println(playerTurn[i].getHand());
+			//currentTurn is set initially to 0, then sets itself to a new turn
+			currentTurn = whoTurn(currentTurn);
+			numberOfTurns++;
+			if(numberOfTurns > 100){
+				System.out.println("Game Lasted Too Long");
+				break;
+			}
 
-				//player plays a card OR draws
-				System.out.println("Current Board Values: " + gameVal + " " + gameColor);
-				playerCard = ((RandomAgent)playerTurn[i]).playCard(gameVal,gameColor);
+			System.out.println("It is Player Number " + currentTurn + "'s Turn");
 
-				//Cannot play, draws a card
-				if(playerCard == null){
-					playerTurn[i].drawCard(dealCard());
-					System.out.println("Player Number " + i + " drew a " + "card");
-					if(deck.size() == 0){
-						shuffleDeck();
-						System.out.println("Deck has been shuffled");
-					}
+			//checks if a player has won
+			if(playerTurn[currentTurn].hand.size() == 0) {
+				gameOver = true;
+				System.out.println("Player Number " + currentTurn + " has won!");
+				System.out.println("This game lasted " + numberOfTurns + " Turns!");
+				break;
+			}
+			System.out.println(playerTurn[currentTurn].getHand());
 
-				} else {
-					//Plays a card
-					System.out.println("Player Number " + i + " played a " + playerCard);
+			//player plays a card OR draws
+			System.out.println("Current Board Values: " + gameVal + " " + gameColor);
+			playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
+
+			//Cannot play, draws a card
+			if(playerCard == null){
+				playerTurn[currentTurn].drawCard(dealCard());
+				System.out.println("Player Number " + currentTurn + " drew a " + "card");
+			} else {
+				//Plays a card
+				System.out.println("Player Number " + currentTurn + " played a " + playerCard);
+
+				if(playerCard.cVal.equals("Draw 2")){
+					victim = whoTurn(currentTurn);
+					playerTurn[victim].drawCard(dealCard());
+					playerTurn[victim].drawCard(dealCard());
+					System.out.println("Player Number " + victim + " drew 2 cards!");
+					currentTurn = whoTurn(currentTurn);
+
 					inPlay = playerCard;
 					discard.add(inPlay);
 					gameColor = playerCard.color;
 					gameVal = playerCard.cVal;
 				}
 
+				else if(playerCard.cVal.equals("Reverse")){
+					gameDirection *= -1;
+					System.out.println("Game direction has been reversed!");
+					currentTurn = whoTurn(currentTurn);
+					
+					inPlay = playerCard;
+					discard.add(inPlay);
+					gameColor = playerCard.color;
+					gameVal = playerCard.cVal;
+				}
+
+				else if(playerCard.cVal.equals("Skip")){
+					victim = whoTurn(currentTurn);
+					System.out.println("Player Number " + victim + " has been skipped!");
+					currentTurn = whoTurn(currentTurn);
+
+					inPlay = playerCard;
+					discard.add(inPlay);
+					gameColor = playerCard.color;
+					gameVal = playerCard.cVal;
+				}
+
+				else if(playerCard.cVal.equals("Wild Card")){
+					gameColor = playerTurn[currentTurn].playedWildCard();
+					System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+				
+					inPlay = playerCard;
+					inPlay.setColor(gameColor);
+					discard.add(inPlay);
+					gameVal = playerCard.cVal;
+				}
+
+				else if(playerCard.cVal.equals("Draw 4")){
+					gameColor = playerTurn[currentTurn].playedWildCard();
+					System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+					playerTurn[victim].drawCard(dealCard());
+					playerTurn[victim].drawCard(dealCard());
+					playerTurn[victim].drawCard(dealCard());
+					playerTurn[victim].drawCard(dealCard());
+					currentTurn = whoTurn(currentTurn);
+					System.out.println("Player Number " + victim + " drew 4 cards!");
+					
+					inPlay = playerCard;
+					inPlay.setColor(gameColor);
+					discard.add(inPlay);
+					gameVal = playerCard.cVal;
+
+				}
+
+				else {
+					inPlay = playerCard;
+					discard.add(inPlay);
+					gameColor = playerCard.color;
+					gameVal = playerCard.cVal;
+				}
+
+
+				
 			}
+
+
 			
 		
 		}
 	}
 	
 
-	private Card dealCard() {
-		return deck.remove(0);
+	private Card dealCard() throws Exception {
+		
+		if(deck.size() != 0){
+			inQuestion = deck.remove(0);
+			return inQuestion;
+		}
+
+		if(deck.size() == 0){
+			shuffleDeck();
+			System.out.println("Deck has been shuffled");
+		}
+
+		if(deck.size() == 0 && discard.size() == 0){
+			throw new Exception ("Empty Deck and Discard");
+		}
+
+		return inQuestion;
 	}
 		
 	private void createDeck() {
@@ -98,14 +193,14 @@ public class GameBoard {
 				deck.add(new Card(cardNumberTypes[j], cardColors[i]));
 			}		
 			deck.add(new Card("0", cardColors[i]));
-			// deck.add(new Card("skip", cardColors[i]));
-			// deck.add(new Card("skip", cardColors[i]));
-			// deck.add(new Card("draw2", cardColors[i]));
-			// deck.add(new Card("draw2", cardColors[i]));
-			// deck.add(new Card("reverse", cardColors[i]));
-			// deck.add(new Card("reverse", cardColors[i]));
-			// deck.add(new Card("wildCard", "black"));
-			// deck.add(new Card("draw4", "black"));			
+			deck.add(new Card("Skip", cardColors[i]));
+			deck.add(new Card("Skip", cardColors[i]));
+			deck.add(new Card("Draw 2", cardColors[i]));
+			deck.add(new Card("Draw 2", cardColors[i]));
+			deck.add(new Card("Reverse", cardColors[i]));
+			deck.add(new Card("Reverse", cardColors[i]));
+			deck.add(new Card("Wild Card", ""));
+		//	deck.add(new Card("Draw 4", ""));			
 		}
 		
 	}
@@ -116,12 +211,24 @@ public class GameBoard {
 		Collections.shuffle(deck);
 	}
 
-	private void dealHands() {
+	private void dealHands() throws Exception {
 		for(int i = 0; i < playerCount; i++) {
 			for(int j = 0; j < STARTING_HAND_SIZE; j++) {
 				playerTurn[i].drawCard(dealCard());
 			}
 		}
+	}
+
+	private int whoTurn(int lastTurn){
+		int currentTurn = lastTurn + gameDirection;
+		if(currentTurn < 0){
+			return playerCount-1;
+		}
+
+		if(currentTurn > playerCount-1){
+			return 0;
+		}
+		return lastTurn + gameDirection;
 	}
 	
 }

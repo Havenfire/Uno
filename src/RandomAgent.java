@@ -21,7 +21,7 @@ public class RandomAgent extends Agent{
 	//
 	public Card playCard(String currentVal, String currentColor) {
 		for(int i = 0; i < hand.size(); i++){
-			if(hand.get(i).cVal.equals(currentVal) || hand.get(i).color.equals(currentColor)){
+			if(hand.get(i).cVal.equals(currentVal) || hand.get(i).color.equals(currentColor) || hand.get(i).color.equals("")){
 				playableHand.add(hand.get(i));
 			}
 
@@ -34,6 +34,10 @@ public class RandomAgent extends Agent{
 		playableHand.clear();
 
 		return playedCard;
+	}
+
+	public String playedWildCard(){
+		return colors[(int)(Math.random()*4)];
 	}
 	
 	
