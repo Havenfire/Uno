@@ -20,20 +20,34 @@ public class RandomAgent extends Agent{
 
 	//
 	public Card playCard(String currentVal, String currentColor) {
-		for(int i = 0; i < hand.size(); i++){
-			if(hand.get(i).cVal.equals(currentVal) || hand.get(i).color.equals(currentColor)){
-				playableHand.add(hand.get(i));
-			}
-
-		}
+		formPlayableHand(currentVal, currentColor);
+		System.out.println(playableHand);
 		if(playableHand.size() == 0){
 			return null;
 		}
+
 		Card playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
 		hand.remove(hand.indexOf(playedCard));
 		playableHand.clear();
 
 		return playedCard;
+	}
+
+	public String playedWildCard(){
+		return colors[(int)(Math.random()*4)];
+	}
+
+
+	@Override
+	public void formPlayableHand(String curVal, String curColor) {
+		for(int i = 0; i < hand.size(); i++){
+			if(hand.get(i).cVal.equals(curVal) || hand.get(i).color.equals(curColor) || hand.get(i).color.equals("")){
+			
+				playableHand.add(hand.get(i));
+			}
+
+		}
+
 	}
 	
 	
