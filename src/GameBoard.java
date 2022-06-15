@@ -29,7 +29,7 @@ public class GameBoard {
 		playerCount = newPlayerCount;
 	}
 	
-	public void initialize() throws Exception {
+	public void initialize(){
 		playerTurn = new Agent[playerCount];
 		for(int i = 0; i < playerCount; i++) {
 			RandomAgent r = new RandomAgent(i);
@@ -41,7 +41,7 @@ public class GameBoard {
 		dealHands();
 	}
 	
-	public void startGame() throws Exception {
+	public void startGame(){
 		inPlay = dealCard();
 		discard.add(inPlay);
 		System.out.println("First Card is " + inPlay);
@@ -52,27 +52,20 @@ public class GameBoard {
 
 		while(!gameOver) {
 
-			
-			// //all players take a turn
 
 			//currentTurn is set initially to 0, then sets itself to a new turn
 			currentTurn = whoTurn(currentTurn);
 			numberOfTurns++;
-			if(numberOfTurns > 100){
+			if(numberOfTurns > 1000){
 				System.out.println("Game Lasted Too Long");
 				break;
 			}
 
+			System.out.println("");
 			System.out.println("It is Player Number " + currentTurn + "'s Turn");
-
-			//checks if a player has won
-			if(playerTurn[currentTurn].hand.size() == 0) {
-				gameOver = true;
-				System.out.println("Player Number " + currentTurn + " has won!");
-				System.out.println("This game lasted " + numberOfTurns + " Turns!");
-				break;
-			}
+			
 			System.out.println(playerTurn[currentTurn].getHand());
+			System.out.println("HAND SIZE: " + playerTurn[currentTurn].hand.size());
 
 			//player plays a card OR draws
 			System.out.println("Current Board Values: " + gameVal + " " + gameColor);
@@ -159,14 +152,19 @@ public class GameBoard {
 				
 			}
 
-
-			
+			//checks if the player has won
+			if(playerTurn[currentTurn].hand.size() == 0) {
+				gameOver = true;
+				System.out.println("Player Number " + currentTurn + " has won!");
+				System.out.println("This game lasted " + numberOfTurns + " Turns!");
+				break;
+			}
 		
 		}
 	}
 	
 
-	private Card dealCard() throws Exception {
+	private Card dealCard(){
 		
 		if(deck.size() != 0){
 			inQuestion = deck.remove(0);
@@ -179,7 +177,7 @@ public class GameBoard {
 		}
 
 		if(deck.size() == 0 && discard.size() == 0){
-			throw new Exception ("Empty Deck and Discard");
+			;
 		}
 
 		return inQuestion;
@@ -200,7 +198,7 @@ public class GameBoard {
 			deck.add(new Card("Reverse", cardColors[i]));
 			deck.add(new Card("Reverse", cardColors[i]));
 			deck.add(new Card("Wild Card", ""));
-		//	deck.add(new Card("Draw 4", ""));			
+			deck.add(new Card("Draw 4", ""));			
 		}
 		
 	}
@@ -209,9 +207,11 @@ public class GameBoard {
 		deck.addAll(discard);
 		discard.clear();
 		Collections.shuffle(deck);
+		deck.remove(inPlay);
+		discard.add(inPlay);
 	}
 
-	private void dealHands() throws Exception {
+	private void dealHands() {
 		for(int i = 0; i < playerCount; i++) {
 			for(int j = 0; j < STARTING_HAND_SIZE; j++) {
 				playerTurn[i].drawCard(dealCard());
