@@ -21,7 +21,6 @@ public class RandomAgent extends Agent{
 	//
 	public Card playCard(String currentVal, String currentColor) {
 		formPlayableHand(currentVal, currentColor);
-		System.out.println(playableHand);
 		if(playableHand.size() == 0){
 			return null;
 		}

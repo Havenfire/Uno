@@ -12,14 +12,14 @@ public class GameBoard {
 	int playerCount;
 	Agent[] playerTurn;
 	Card inPlay;
-	boolean gameOver = false;
+	boolean gameOver;
 	String gameColor;
 	String gameVal;
-	int gameDirection = 1;
+	int gameDirection;
 	int currentTurn = Integer.MAX_VALUE;
 	int victim;
 	Card inQuestion;
-	int numberOfTurns = 0;
+	int numberOfTurns;
 	
 	GameBoard(int newPlayerCount){
 		if(newPlayerCount > 8 || newPlayerCount < 2) {
@@ -35,13 +35,16 @@ public class GameBoard {
 			RandomAgent r = new RandomAgent(i);
 			playerTurn[i] = r;			
 		}
+		gameDirection = 1;
+		numberOfTurns = 0;
+		gameOver = false;
 		
 		createDeck();
 		shuffleDeck();
 		dealHands();
 	}
 	
-	public void startGame(){
+	public int startGame(){
 		inPlay = dealCard();
 		discard.add(inPlay);
 		System.out.println("First Card is " + inPlay);
@@ -95,7 +98,10 @@ public class GameBoard {
 				else if(playerCard.cVal.equals("Reverse")){
 					gameDirection *= -1;
 					System.out.println("Game direction has been reversed!");
-					currentTurn = whoTurn(currentTurn);
+					if(playerCount == 2){
+						currentTurn = whoTurn(currentTurn);
+					}
+					
 					
 					inPlay = playerCard;
 					discard.add(inPlay);
@@ -153,14 +159,17 @@ public class GameBoard {
 			}
 
 			//checks if the player has won
-			if(playerTurn[currentTurn].hand.size() == 0) {
-				gameOver = true;
-				System.out.println("Player Number " + currentTurn + " has won!");
-				System.out.println("This game lasted " + numberOfTurns + " Turns!");
-				break;
-			}
+			for(int i = 0; i < playerCount; i++)
+				if(playerTurn[i].hand.size() == 0) {
+					gameOver = true;
+					System.out.println("Player Number " + i + " has won!");
+					System.out.println("This game lasted " + numberOfTurns + " Turns!");
+					break;
+				}
 		
 		}
+
+		return numberOfTurns;
 	}
 	
 
