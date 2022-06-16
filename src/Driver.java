@@ -3,7 +3,7 @@ public class Driver {
 	public static void main(String[] args){
 
 		final int playerCount = 3;
-		final int dataPoints = 100;
+		final int dataPoints = 2000;
 
 		int[] dataToCP = new int[dataPoints];
 		int input;
