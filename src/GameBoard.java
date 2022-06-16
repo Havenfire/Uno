@@ -40,7 +40,7 @@ public class GameBoard {
 		gameOver = false;
 		
 		createDeck();
-		shuffleDeck();
+		Collections.shuffle(deck);;
 		dealHands();
 	}
 	
@@ -68,7 +68,6 @@ public class GameBoard {
 			System.out.println("It is Player Number " + currentTurn + "'s Turn");
 			
 			System.out.println(playerTurn[currentTurn].getHand());
-			System.out.println("HAND SIZE: " + playerTurn[currentTurn].hand.size());
 
 			//player plays a card OR draws
 			System.out.println("Current Board Values: " + gameVal + " " + gameColor);
@@ -77,8 +76,10 @@ public class GameBoard {
 			//Cannot play, draws a card
 			if(playerCard == null){
 				playerTurn[currentTurn].drawCard(dealCard());
+				if(gameOver){
+					break;
+				}
 				System.out.println("Player Number " + currentTurn + " drew a " + "card");
-				System.out.println("The player drew a " + playerTurn[currentTurn].getHand().get(playerTurn[currentTurn].getHand().size()-1));
 			} else {
 				//Plays a card
 				System.out.println("Player Number " + currentTurn + " played a " + playerCard);
@@ -171,6 +172,10 @@ public class GameBoard {
 		
 		}
 
+		if(deck.size() == 0 && discard.size() == 0){
+			System.out.println("Game has gone infinite");
+			return -1;
+		}
 		return numberOfTurns;
 	}
 	
@@ -188,7 +193,7 @@ public class GameBoard {
 		}
 
 		if(deck.size() == 0 && discard.size() == 0){
-			;
+			gameOver = true;
 		}
 
 		return inQuestion;
