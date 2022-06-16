@@ -78,6 +78,7 @@ public class GameBoard {
 			if(playerCard == null){
 				playerTurn[currentTurn].drawCard(dealCard());
 				System.out.println("Player Number " + currentTurn + " drew a " + "card");
+				System.out.println("The player drew a " + playerTurn[currentTurn].getHand().get(playerTurn[currentTurn].getHand().size()-1));
 			} else {
 				//Plays a card
 				System.out.println("Player Number " + currentTurn + " played a " + playerCard);
@@ -133,6 +134,7 @@ public class GameBoard {
 				else if(playerCard.cVal.equals("Draw 4")){
 					gameColor = playerTurn[currentTurn].playedWildCard();
 					System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+					victim = whoTurn(currentTurn);
 					playerTurn[victim].drawCard(dealCard());
 					playerTurn[victim].drawCard(dealCard());
 					playerTurn[victim].drawCard(dealCard());

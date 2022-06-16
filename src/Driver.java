@@ -2,12 +2,18 @@ public class Driver {
 
 	public static void main(String[] args){
 
-		int playerCount = 3;
+		final int playerCount = 3;
+		final int dataPoints = 100;
+
+		int[] dataToCP = new int[dataPoints];
+		int input;
 		
-		GameBoard b = new GameBoard(playerCount);
-		for(int i = 0; i < 1; i++){
+		for(int i = 0; i < 100; i++){
+			GameBoard b = new GameBoard(playerCount);
 			b.initialize();
-			b.startGame();
+			input = b.startGame();
+			dataToCP[i] = input;
+			System.out.println("This was game number: " + i);
 		}
 		
 	}
