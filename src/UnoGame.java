@@ -22,4 +22,12 @@ public class UnoGame {
 		return dataCollection;
 	}
 
+	public int getPlayerCount(){
+		return playerCount;
+	}
+
+	public int getDataCount(){
+		return dataPoints;
+	}
+
 }
