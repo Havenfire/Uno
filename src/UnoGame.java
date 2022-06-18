@@ -23,15 +23,5 @@ public class UnoGame {
 
 		return dataCollection;
 	}
-	 
-
-	public static void main(String[] args){
-
-
-		GatewayServer server = new GatewayServer(new UnoGame(3, 500));
-		server.start();
-		System.out.println("Server Started");
- 
-	 }
 
 }
