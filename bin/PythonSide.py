@@ -1,10 +1,22 @@
 from py4j.java_gateway import JavaGateway
-gateway = JavaGateway()                   # connect to the JVM
-random = gateway.jvm.java.util.Random()   # create a java.util.Random instance
-number1 = random.nextInt(10)              # call the Random.nextInt method
-number2 = random.nextInt(10)
-print(number1, number2)
+import matplotlib.pyplot as plt
+import numpy as np
 
-addition_app = gateway.entry_point               # get the AdditionApplication instance
-value = addition_app.addition(number1, number2) # call the addition method
-print(value)
+
+gateway = JavaGateway()                   # connect to the JVM
+
+uno_game = gateway.entry_point.getUnoGame()      
+
+uno_data = uno_game.runSimulation() #This is an array of all unoGame Data
+
+data_list = []
+
+for x in uno_data:
+    data_list.append(x)
+
+plt.hist(data_list)
+plt.title('Uno Game')
+plt.xlabel('Number of Turns')
+plt.ylabel('Frequency')
+plt.show()
+
