@@ -1,23 +1,37 @@
+import py4j.GatewayServer;
+
 public class UnoGame {
 
-	public static void main(String[] args){
+	int playerCount;
+	int dataPoints;
+	int input;
+	int[] dataCollection;
+	public UnoGame(int initPlayerCount, int desiredDataPoints){
+		playerCount = initPlayerCount;
+		dataPoints = desiredDataPoints;
+		dataCollection = new int[dataPoints];
 
-		final int playerCount = 3;
-		final int dataPoints = 500;
+	}
 
-		int[] dataToCP = new int[dataPoints];
-		int input;
-		
+	public int[] runSimulation(){
 		for(int i = 0; i < dataPoints; i++){
 			GameBoard b = new GameBoard(playerCount);
 			b.initialize();
 			input = b.startGame();
-			dataToCP[i] = input;
+			dataCollection[i] = input;
 		}
-		for(int i = 0; i < dataPoints; i++){
-			System.out.println(dataToCP[i]);
-		}
-		
+
+		return dataCollection;
 	}
+	 
+
+	public static void main(String[] args){
+
+
+		GatewayServer server = new GatewayServer(new UnoGame(3, 500));
+		server.start();
+		System.out.println("Server Started");
+ 
+	 }
 
 }
