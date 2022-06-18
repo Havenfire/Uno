@@ -18,5 +18,13 @@ public abstract class Agent {
 	public abstract Card playCard(String currentVal, String currentColor);
 
 	public abstract void formPlayableHand(String currentVal, String currentColor);
+
+	public Card playDrawnCard(String currentVal, String currentColor, Card c){
+		if(c.cVal == currentVal || c.color == currentColor || c.cVal == "Draw 4" || c.cVal == "Wild Card"){
+			return c;
+		}
+		return null;
+	}
+
 }
 

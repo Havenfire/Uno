@@ -21,12 +21,20 @@ public class GameBoard {
 	int victim;
 	Card inQuestion;
 	int numberOfTurns;
+
+	//custom rules
+	boolean stackingDrawCardsRule;	//not on
+	boolean drawUntilPlayableRule;
+	boolean drawnCardPlayableRule;
+
 	
-	GameBoard(int newPlayerCount){
+	GameBoard(int newPlayerCount, boolean set){
 		if(newPlayerCount > 8 || newPlayerCount < 2) {
 			throw new Error("Check Number of Players");
 		}
-		
+		stackingDrawCardsRule = false;	//not on
+		drawUntilPlayableRule = ;
+		drawnCardPlayableRule;
 		playerCount = newPlayerCount;
 	}
 	
@@ -39,7 +47,7 @@ public class GameBoard {
 		gameDirection = 1;
 		numberOfTurns = 0;
 		gameOver = false;
-		
+
 		createDeck();
 		Collections.shuffle(deck);;
 		dealHands();
@@ -77,89 +85,26 @@ public class GameBoard {
 			//Cannot play, draws a card
 			if(playerCard == null){
 				playerTurn[currentTurn].drawCard(dealCard());
+				if(drawnCardPlayableRule){
+					playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
+
+					//drawn card is unplayable
+					if(playerCard == null){
+						
+					//drawn card IS playable
+					} else {
+						activatePlapCard(playerCard);
+					}
+				}
+
 				if(gameOver){
 					break;
 				}
 				System.out.println("Player Number " + currentTurn + " drew a " + "card");
 			} else {
 				//Plays a card
-				System.out.println("Player Number " + currentTurn + " played a " + playerCard);
-
-				if(playerCard.cVal.equals("Draw 2")){
-					victim = whoTurn(currentTurn);
-					playerTurn[victim].drawCard(dealCard());
-					playerTurn[victim].drawCard(dealCard());
-					System.out.println("Player Number " + victim + " drew 2 cards!");
-					currentTurn = whoTurn(currentTurn);
-
-					inPlay = playerCard;
-					discard.add(inPlay);
-					gameColor = playerCard.color;
-					gameVal = playerCard.cVal;
-				}
-
-				else if(playerCard.cVal.equals("Reverse")){
-					gameDirection *= -1;
-					System.out.println("Game direction has been reversed!");
-					if(playerCount == 2){
-						currentTurn = whoTurn(currentTurn);
-					}
-					
-					
-					inPlay = playerCard;
-					discard.add(inPlay);
-					gameColor = playerCard.color;
-					gameVal = playerCard.cVal;
-				}
-
-				else if(playerCard.cVal.equals("Skip")){
-					victim = whoTurn(currentTurn);
-					System.out.println("Player Number " + victim + " has been skipped!");
-					currentTurn = whoTurn(currentTurn);
-
-					inPlay = playerCard;
-					discard.add(inPlay);
-					gameColor = playerCard.color;
-					gameVal = playerCard.cVal;
-				}
-
-				else if(playerCard.cVal.equals("Wild Card")){
-					gameColor = playerTurn[currentTurn].playedWildCard();
-					System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
-				
-					inPlay = playerCard;
-					inPlay.setColor(gameColor);
-					discard.add(inPlay);
-					gameVal = playerCard.cVal;
-				}
-
-				else if(playerCard.cVal.equals("Draw 4")){
-					gameColor = playerTurn[currentTurn].playedWildCard();
-					System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
-					victim = whoTurn(currentTurn);
-					playerTurn[victim].drawCard(dealCard());
-					playerTurn[victim].drawCard(dealCard());
-					playerTurn[victim].drawCard(dealCard());
-					playerTurn[victim].drawCard(dealCard());
-					currentTurn = whoTurn(currentTurn);
-					System.out.println("Player Number " + victim + " drew 4 cards!");
-					
-					inPlay = playerCard;
-					inPlay.setColor(gameColor);
-					discard.add(inPlay);
-					gameVal = playerCard.cVal;
-
-				}
-
-				else {
-					inPlay = playerCard;
-					discard.add(inPlay);
-					gameColor = playerCard.color;
-					gameVal = playerCard.cVal;
-				}
-
-
-				
+				activatePlapCard(playerCard);
+			
 			}
 
 			//checks if the player has won
@@ -180,6 +125,82 @@ public class GameBoard {
 		return numberOfTurns;
 	}
 	
+	private void activatePlapCard(Card thePlayerCard){
+		System.out.println("Player Number " + currentTurn + " played a " + thePlayerCard);
+
+		if(thePlayerCard.cVal.equals("Draw 2")){
+			victim = whoTurn(currentTurn);
+			playerTurn[victim].drawCard(dealCard());
+			playerTurn[victim].drawCard(dealCard());
+			System.out.println("Player Number " + victim + " drew 2 cards!");
+			currentTurn = whoTurn(currentTurn);
+
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+
+		else if(thePlayerCard.cVal.equals("Reverse")){
+			gameDirection *= -1;
+			System.out.println("Game direction has been reversed!");
+			if(playerCount == 2){
+				currentTurn = whoTurn(currentTurn);
+			}
+			
+			
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+
+		else if(thePlayerCard.cVal.equals("Skip")){
+			victim = whoTurn(currentTurn);
+			System.out.println("Player Number " + victim + " has been skipped!");
+			currentTurn = whoTurn(currentTurn);
+
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+
+		else if(thePlayerCard.cVal.equals("Wild Card")){
+			gameColor = playerTurn[currentTurn].playedWildCard();
+			System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+		
+			inPlay = thePlayerCard;
+			inPlay.setColor(gameColor);
+			discard.add(inPlay);
+			gameVal = thePlayerCard.cVal;
+		}
+
+		else if(thePlayerCard.cVal.equals("Draw 4")){
+			gameColor = playerTurn[currentTurn].playedWildCard();
+			System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+			victim = whoTurn(currentTurn);
+			playerTurn[victim].drawCard(dealCard());
+			playerTurn[victim].drawCard(dealCard());
+			playerTurn[victim].drawCard(dealCard());
+			playerTurn[victim].drawCard(dealCard());
+			currentTurn = whoTurn(currentTurn);
+			System.out.println("Player Number " + victim + " drew 4 cards!");
+			
+			inPlay = thePlayerCard;
+			inPlay.setColor(gameColor);
+			discard.add(inPlay);
+			gameVal = thePlayerCard.cVal;
+
+		}
+
+		else {
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+	}
 
 	private Card dealCard(){
 		
