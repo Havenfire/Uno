@@ -1,4 +1,4 @@
-public class Driver {
+public class UnoGame {
 
 	public static void main(String[] args){
 
@@ -14,7 +14,6 @@ public class Driver {
 			input = b.startGame();
 			dataToCP[i] = input;
 		}
-		System.out.println("This data has THIS many data points: " + dataToCP.length);
 		for(int i = 0; i < dataPoints; i++){
 			System.out.println(dataToCP[i]);
 		}
