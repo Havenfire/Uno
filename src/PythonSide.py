@@ -15,7 +15,7 @@ for x in uno_data:
     data_list.append(x)
 
 plt.hist(data_list)
-plt.title('Uno Game')
+plt.title('Uno Game of 3 players (N = 500)')
 plt.xlabel('Number of Turns')
 plt.ylabel('Frequency')
 plt.show()
