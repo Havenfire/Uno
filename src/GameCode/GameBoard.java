@@ -6,21 +6,21 @@ import java.util.Collections;
 public class GameBoard {
 
 	private static final int STARTING_HAND_SIZE = 7;
-	ArrayList<Card> deck = new ArrayList<Card>();
-	ArrayList<Card> discard = new ArrayList<Card>();
-	final String[] cardNumberTypes = {"1","2","3","4","5","6","7","8","9"};
-	final String[] cardColors = {"red","yellow","green","blue"};	
+	ArrayList<FlipCard> deck = new ArrayList<FlipCard>();
+	ArrayList<FlipCard> discard = new ArrayList<FlipCard>();
+
 	int playerCount;
 	Agent[] playerTurn;
-	Card inPlay;
+	FlipCard inPlay;
 	boolean gameOver;
 	String gameColor;
 	String gameVal;
 	int gameDirection;
 	int currentTurn = Integer.MAX_VALUE;
 	int victim;
-	Card inQuestion;
+	FlipCard inQuestion;
 	int numberOfTurns;
+	boolean isFlipped;
 
 	//custom rules
 	boolean stackingDrawCardsRule;
@@ -59,7 +59,7 @@ public class GameBoard {
 		System.out.println("First Card is " + inPlay);
 		gameColor = inPlay.color;
 		gameVal = inPlay.cVal;
-		Card playerCard;
+		FlipCard playerCard;
 
 
 		while(!gameOver) {
@@ -134,7 +134,7 @@ public class GameBoard {
 	}
 	
 	
-	private void activatePlapCard(Card thePlayerCard){
+	private void activatePlapCard(FlipCard thePlayerCard){
 		System.out.println("Player Number " + currentTurn + " played a " + thePlayerCard);
 
 		if(thePlayerCard.cVal.equals("Draw 2")){
@@ -211,7 +211,7 @@ public class GameBoard {
 		}
 	}
 
-	private Card dealCard(){
+	private FlipCard dealCard(){
 		
 		if(deck.size() != 0){
 			inQuestion = deck.remove(0);
@@ -232,21 +232,17 @@ public class GameBoard {
 		
 	private void createDeck() {
 		
-		for(int i = 0; i < cardColors.length; i++) {
-			for(int j = 0; j < cardNumberTypes.length; j++) {
-				deck.add(new Card(cardNumberTypes[j], cardColors[i]));
-				deck.add(new Card(cardNumberTypes[j], cardColors[i]));
-			}		
-			deck.add(new Card("0", cardColors[i]));
-			deck.add(new Card("Skip", cardColors[i]));
-			deck.add(new Card("Skip", cardColors[i]));
-			deck.add(new Card("Draw 2", cardColors[i]));
-			deck.add(new Card("Draw 2", cardColors[i]));
-			deck.add(new Card("Reverse", cardColors[i]));
-			deck.add(new Card("Reverse", cardColors[i]));
-			deck.add(new Card("Wild Card", ""));
-			deck.add(new Card("Draw 4", ""));			
-		}
+		//8 Flip Cards
+		deck.add(new FlipCard("flip", "green", "3", "lBlue"));
+		deck.add(new FlipCard("flip", "green", "drawX", "wild"));
+		deck.add(new FlipCard("flip", "red", "8", "pink"));
+		deck.add(new FlipCard("flip", "red", "3", "purple"));
+		deck.add(new FlipCard("flip", "blue", "6", "purple"));
+		deck.add(new FlipCard("flip", "blue", "7", "purple"));
+		deck.add(new FlipCard("flip", "yellow", "4", "pink"));
+		deck.add(new FlipCard("flip", "yellow", "8", "orange"));
+
+		
 		
 	}
 	
