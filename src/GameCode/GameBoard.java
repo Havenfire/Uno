@@ -23,18 +23,18 @@ public class GameBoard {
 	int numberOfTurns;
 
 	//custom rules
-	boolean stackingDrawCardsRule;	//not on
+	boolean stackingDrawCardsRule;
 	boolean drawUntilPlayableRule;
 	boolean drawnCardPlayableRule;
 
 	
-	GameBoard(int newPlayerCount, boolean set){
+	GameBoard(int newPlayerCount, boolean setStackingDrawCardsRule, boolean setDrawUntilPlayableRule, boolean setDrawnCardPlayableRule){
 		if(newPlayerCount > 8 || newPlayerCount < 2) {
 			throw new Error("Check Number of Players");
 		}
-		stackingDrawCardsRule = false;	//not on
-		drawUntilPlayableRule = ;
-		drawnCardPlayableRule;
+		stackingDrawCardsRule = setStackingDrawCardsRule; //TODO
+		drawUntilPlayableRule = setDrawUntilPlayableRule;
+		drawnCardPlayableRule = setDrawnCardPlayableRule;
 		playerCount = newPlayerCount;
 	}
 	
@@ -84,23 +84,31 @@ public class GameBoard {
 
 			//Cannot play, draws a card
 			if(playerCard == null){
-				playerTurn[currentTurn].drawCard(dealCard());
-				if(drawnCardPlayableRule){
-					playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
-
-					//drawn card is unplayable
-					if(playerCard == null){
-						
-					//drawn card IS playable
-					} else {
-						activatePlapCard(playerCard);
+				if(drawUntilPlayableRule){
+					while(playerCard == null){
+						playerTurn[currentTurn].drawCard(dealCard());
+						System.out.println("Player Number " + currentTurn + " drew a " + "card");
+						playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
 					}
-				}
+					activatePlapCard(playerCard);
 
-				if(gameOver){
-					break;
+				} else {
+					//draws a card
+					playerTurn[currentTurn].drawCard(dealCard());
+					if(drawnCardPlayableRule){
+						playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
+						//if drawn card is playable
+						if(playerCard != null){
+							activatePlapCard(playerCard);
+						}
+					}
+
+					if(gameOver){
+						break;
+					}
+					System.out.println("Player Number " + currentTurn + " drew a " + "card");
+				
 				}
-				System.out.println("Player Number " + currentTurn + " drew a " + "card");
 			} else {
 				//Plays a card
 				activatePlapCard(playerCard);
@@ -124,6 +132,7 @@ public class GameBoard {
 		}
 		return numberOfTurns;
 	}
+	
 	
 	private void activatePlapCard(Card thePlayerCard){
 		System.out.println("Player Number " + currentTurn + " played a " + thePlayerCard);

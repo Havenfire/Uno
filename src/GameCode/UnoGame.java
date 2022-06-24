@@ -15,7 +15,7 @@ public class UnoGame {
 
 	public int[] runSimulation(){
 		for(int i = 0; i < dataPoints; i++){
-			GameBoard b = new GameBoard(playerCount);
+			GameBoard b = new GameBoard(playerCount, false, false, false);
 			b.initialize();
 			input = b.startGame();
 			dataCollection[i] = input;
