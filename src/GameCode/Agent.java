@@ -11,7 +11,7 @@ public abstract class Agent {
 		hand.add(flipCard);
 	}
 	
-	protected abstract ArrayList<Card> getHand();
+	protected abstract ArrayList<FlipCard> getHand();
 
 	public abstract String playedWildCard();
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class RandomAgent extends Agent{
 
 	int playerNum;
-	ArrayList<Card> playableHand = new ArrayList<Card>();
+	ArrayList<FlipCard> playableHand = new ArrayList<FlipCard>();
 	RandomAgent(int newPlayerNum){
 		playerNum = newPlayerNum;
 	}
@@ -15,19 +15,19 @@ public class RandomAgent extends Agent{
 		return playerNum;
 	}
 	
-	public ArrayList<Card> getHand(){
+	public ArrayList<FlipCard> getHand(){
 		return hand;
 		
 	}
 
 	//
-	public Card playCard(String currentVal, String currentColor) {
+	public FlipCard playCard(String currentVal, String currentColor) {
 		formPlayableHand(currentVal, currentColor);
 		if(playableHand.size() == 0){
 			return null;
 		}
 
-		Card playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
+		FlipCard playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
 		hand.remove(hand.indexOf(playedCard));
 		playableHand.clear();
 

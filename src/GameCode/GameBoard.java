@@ -231,7 +231,19 @@ public class GameBoard {
 	}
 		
 	private void createDeck() {
-		
+
+		//4 Draw2 Cards
+		deck.add(new FlipCard("draw2", "wild", "4", "orange"));
+		deck.add(new FlipCard("draw2", "wild", "3", "pink"));
+		deck.add(new FlipCard("draw2", "wild", "7", "orange"));
+		deck.add(new FlipCard("draw2", "wild", "9", "purple"));
+
+		//4 FWild Cards
+		deck.add(new FlipCard("fwild", "wild", "7", "purple"));
+		deck.add(new FlipCard("fwild", "wild", "flip", "pink"));
+		deck.add(new FlipCard("fwild", "wild", "5", "pink"));
+		deck.add(new FlipCard("fwild", "wild", "3", "lBlue"));
+
 		//8 Flip Cards
 		deck.add(new FlipCard("flip", "green", "3", "lBlue"));
 		deck.add(new FlipCard("flip", "green", "drawX", "wild"));
@@ -242,7 +254,72 @@ public class GameBoard {
 		deck.add(new FlipCard("flip", "yellow", "4", "pink"));
 		deck.add(new FlipCard("flip", "yellow", "8", "orange"));
 
+		//8 Draw1 Cards
+		deck.add(new FlipCard("draw1", "green", "6", "orange"));
+		deck.add(new FlipCard("draw1", "green", "6", "lblue"));
+		deck.add(new FlipCard("draw1", "red", "4", "pink"));
+		deck.add(new FlipCard("draw1", "red", "3", "pink"));
+		deck.add(new FlipCard("draw1", "blue", "6", "blue"));
+		deck.add(new FlipCard("draw1", "blue", "6", "pink"));
+		deck.add(new FlipCard("draw1", "yellow", "1", "pink"));
+		deck.add(new FlipCard("draw1", "yellow", "8", "purple"));
+
+		//8 Skip Cards
+		deck.add(new FlipCard("skip", "green", "9", "orange"));
+		deck.add(new FlipCard("skip", "green", "4", "purple"));
+		deck.add(new FlipCard("skip", "red", "draw5", "orange"));
+		deck.add(new FlipCard("skip", "red", "bwild", "wild"));
+		deck.add(new FlipCard("skip", "blue", "1", "lblue"));
+		deck.add(new FlipCard("skip", "blue", "9", "pink"));
+		deck.add(new FlipCard("skip", "yellow", "3", "orange"));
+		deck.add(new FlipCard("skip", "yellow", "flip", "lblue"));
+
+		//Reverse Cards
+		deck.add(new FlipCard("reverse", "green", "7", "pink"));
+		deck.add(new FlipCard("reverse", "green", "1", "orange"));
+		deck.add(new FlipCard("reverse", "red", "7", "lblue"));
+		deck.add(new FlipCard("reverse", "red", "3", "purple"));
+		deck.add(new FlipCard("reverse", "blue", "4", "orange"));
+		deck.add(new FlipCard("reverse", "blue", "bwild", "wild"));
+		deck.add(new FlipCard("reverse", "yellow", "flip", "lblue"));
+		deck.add(new FlipCard("reverse", "yellow", "bwild", "wild"));
+
+		//Number Cards
+		deck.add(new FlipCard("1", "green", "5", "orange"));
+		deck.add(new FlipCard("1", "green", "flip", "orange"));
+		deck.add(new FlipCard("1", "red", "3", "pink"));
+		deck.add(new FlipCard("1", "red", "2", "purple"));
+		deck.add(new FlipCard("1", "blue", "skipall", "purple"));
+		deck.add(new FlipCard("1", "blue", "skipall", "purple"));
+		deck.add(new FlipCard("1", "yellow", "skipall", "pink"));
+		deck.add(new FlipCard("1", "yellow", "bwild", "wild"));
+
+		deck.add(new FlipCard("2", "green", "skipall", "lblue"));
+		deck.add(new FlipCard("2", "green", "draw5", "lblue"));
+		deck.add(new FlipCard("2", "red", "reverse", "orange"));
+		deck.add(new FlipCard("2", "red", "draw5", "purple"));
+		deck.add(new FlipCard("2", "blue", "8", "orange"));
+		deck.add(new FlipCard("2", "blue", "6", "pink"));
+		deck.add(new FlipCard("2", "yellow", "8", "lblue"));
+		deck.add(new FlipCard("2", "yellow", "1", "lblue"));
 		
+		deck.add(new FlipCard("3", "green", "flip", "pink"));
+		deck.add(new FlipCard("3", "green", "2", "purple"));
+		deck.add(new FlipCard("3", "red", "drawX", "wild"));
+		deck.add(new FlipCard("3", "red", "7", "pink"));
+		deck.add(new FlipCard("3", "blue", "2", "lblue"));
+		deck.add(new FlipCard("3", "blue", "8", "purple"));
+		deck.add(new FlipCard("3", "yellow", "draw5", "pink"));
+		deck.add(new FlipCard("3", "yellow", "1", "purple"));
+
+		deck.add(new FlipCard("4", "green", "8", "pink"));
+		deck.add(new FlipCard("4", "green", "9", "lblue"));
+		deck.add(new FlipCard("4", "red", "flip", "orange"));
+		deck.add(new FlipCard("4", "red", "draw5", "purple"));
+		deck.add(new FlipCard("4", "blue", "draw5", "lblue"));
+		deck.add(new FlipCard("4", "blue", "1", "purple"));
+		deck.add(new FlipCard("4", "yellow", "draw5", "pink"));
+		deck.add(new FlipCard("4", "yellow", "flip", "purple"));
 		
 	}
 	
