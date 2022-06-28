@@ -28,7 +28,7 @@ public class FlipCard {
 	
 	public String toString() {
 			
-		return "FRONT: " + cVal + " " + color + " BACK:" + bVal + " " + bColor;
+		return cVal + " " + color + "/" + bVal + " " + bColor;
 		
 	}
 	
