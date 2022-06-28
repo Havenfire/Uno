@@ -6,7 +6,8 @@ public abstract class Agent {
 	ArrayList<FlipCard> hand = new ArrayList<FlipCard>();
 	ArrayList<FlipCard> playableHand = new ArrayList<FlipCard>();
 	final String[] colors = {"red","blue","green","yellow"};
-	
+	final String[] bColors = {"lblue","pink","purple","orange"};
+
 	public void drawCard(FlipCard flipCard){
 		hand.add(flipCard);
 	}
@@ -14,6 +15,7 @@ public abstract class Agent {
 	protected abstract ArrayList<FlipCard> getHand();
 
 	public abstract String playedWildCard();
+	public abstract String playedBWildCard();
 
 	public abstract FlipCard playCard(String currentVal, String currentColor);
 

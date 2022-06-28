@@ -38,11 +38,19 @@ public class RandomAgent extends Agent{
 		return colors[(int)(Math.random()*4)];
 	}
 
+	public String playedBWildCard(){
+		return bColors[(int)(Math.random()*4)];
+	}
 
 	@Override
 	public void formPlayableHand(String curVal, String curColor) {
 		for(int i = 0; i < hand.size(); i++){
 			if(hand.get(i).cVal.equals(curVal) || hand.get(i).color.equals(curColor) || hand.get(i).color.equals("")){
+			
+				playableHand.add(hand.get(i));
+			}
+
+			if(hand.get(i).bVal.equals(curVal) || hand.get(i).bColor.equals(curColor) || hand.get(i).bColor.equals("")){
 			
 				playableHand.add(hand.get(i));
 			}
