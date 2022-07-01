@@ -77,55 +77,113 @@ public class GameBoard {
 
 			System.out.println("");
 			System.out.println("It is Player Number " + currentTurn + "'s Turn");
-			
-			System.out.println(playerTurn[currentTurn].getHand());
+			if(!isFlipped){
+				System.out.println(playerTurn[currentTurn].getHand());
 
-			//player plays a card OR draws
-			System.out.println("Current Board Values: " + gameVal + " " + gameColor);
-			playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
+				//player plays a card OR draws
+				System.out.println("Current Board Values: " + gameVal + " " + gameColor);
 
-			//Cannot play, draws a card
-			if(playerCard == null){
-				if(drawUntilPlayableRule){
-					while(playerCard == null){
-						playerTurn[currentTurn].drawCard(dealCard());
-						System.out.println("Player Number " + currentTurn + " drew a " + "card");
-						playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
-					}
-					activatePlapCard(playerCard);
 
-				} else {
-					//draws a card
-					playerTurn[currentTurn].drawCard(dealCard());
-					if(drawnCardPlayableRule){
-						playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
-						//if drawn card is playable
-						if(playerCard != null){
-							activatePlapCard(playerCard);
+				playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
+
+				//Cannot play, draws a card
+				if(playerCard == null){
+					if(drawUntilPlayableRule){
+						while(playerCard == null){
+							playerTurn[currentTurn].drawCard(dealCard());
+							System.out.println("Player Number " + currentTurn + " drew a " + "card");
+							playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
 						}
-					}
+						activatePlapCard(playerCard);
 
-					if(gameOver){
-						break;
+					} else {
+						//draws a card
+						playerTurn[currentTurn].drawCard(dealCard());
+						if(drawnCardPlayableRule){
+							playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
+							//if drawn card is playable
+							if(playerCard != null){
+								activatePlapCard(playerCard);
+							}
+						}
+
+						if(gameOver){
+							break;
+						}
+						System.out.println("Player Number " + currentTurn + " drew a " + "card");
+					
 					}
-					System.out.println("Player Number " + currentTurn + " drew a " + "card");
+				} else {
+					//Plays a card
+					activatePlapCard(playerCard);
 				
 				}
-			} else {
-				//Plays a card
-				activatePlapCard(playerCard);
-			
-			}
 
-			//checks if the player has won
-			for(int i = 0; i < playerCount; i++)
-				if(playerTurn[i].hand.size() == 0) {
-					gameOver = true;
-					System.out.println("Player Number " + i + " has won!");
-					System.out.println("This game lasted " + numberOfTurns + " Turns!");
-					break;
+				//checks if the player has won
+				for(int i = 0; i < playerCount; i++) {
+					if(playerTurn[i].hand.size() == 0) {
+						gameOver = true;
+						System.out.println("Player Number " + i + " has won!");
+						System.out.println("This game lasted " + numberOfTurns + " Turns!");
+						break;
+					}
+			
 				}
-		
+
+				//IF IT IS FLIPPED START HERE
+			} else {
+				System.out.println(playerTurn[currentTurn].getHand());
+
+				//player plays a card OR draws
+				System.out.println("Current Board Values: " + gameVal + " " + gameColor);
+
+
+				playerCard = (playerTurn[currentTurn]).playBCard(gameVal,gameColor);
+
+				//Cannot play, draws a card
+				if(playerCard == null){
+					if(drawUntilPlayableRule){
+						while(playerCard == null){
+							playerTurn[currentTurn].drawCard(dealCard());
+							System.out.println("Player Number " + currentTurn + " drew a " + "card");
+							playerCard = (playerTurn[currentTurn]).playBCard(gameVal,gameColor);
+						}
+						activateBPlapCard(playerCard);
+
+					} else {
+						//draws a card
+						playerTurn[currentTurn].drawCard(dealCard());
+						if(drawnCardPlayableRule){
+							playerCard = (playerTurn[currentTurn]).playBCard(gameVal,gameColor);
+							//if drawn card is playable
+							if(playerCard != null){
+								activateBPlapCard(playerCard);
+							}
+						}
+
+						if(gameOver){
+							break;
+						}
+						System.out.println("Player Number " + currentTurn + " drew a " + "card");
+					
+					}
+				} else {
+					//Plays a card
+					activateBPlapCard(playerCard);
+				
+				}
+
+				//checks if the player has won
+				for(int i = 0; i < playerCount; i++) {
+					if(playerTurn[i].hand.size() == 0) {
+						gameOver = true;
+						System.out.println("Player Number " + i + " has won!");
+						System.out.println("This game lasted " + numberOfTurns + " Turns!");
+						break;
+					}
+			
+				}
+			}
 		}
 
 		if(goneInfinite){
@@ -139,105 +197,99 @@ public class GameBoard {
 	
 	
 	private void activatePlapCard(FlipCard thePlayerCard){
-		System.out.println("Player Number " + currentTurn + " played a " + thePlayerCard);
+			System.out.println("Player Number " + currentTurn + " played a " + thePlayerCard);
 
-		if(!isFlipped){
-
-			if(thePlayerCard.cVal.equals("flip")){
-				
-				isFlipped = !isFlipped;
-				System.out.println("The game has been flipped!");
-
-				inPlay = thePlayerCard;
-				discard.add(inPlay);
-				gameColor = thePlayerCard.color;
-				gameVal = thePlayerCard.cVal;
-			}
-
-			else if(thePlayerCard.cVal.equals("reverse")){
-				gameDirection *= -1;
-				System.out.println("Game direction has been reversed!");
-				if(playerCount == 2){
-					currentTurn = whoTurn(currentTurn);
-				}
-				
-				
-				inPlay = thePlayerCard;
-				discard.add(inPlay);
-				gameColor = thePlayerCard.color;
-				gameVal = thePlayerCard.cVal;
-			}
-
-			else if(thePlayerCard.cVal.equals("skip")){
-				victim = whoTurn(currentTurn);
-				System.out.println("Player Number " + victim + " has been skipped!");
-				currentTurn = whoTurn(currentTurn);
-
-				inPlay = thePlayerCard;
-				discard.add(inPlay);
-				gameColor = thePlayerCard.color;
-				gameVal = thePlayerCard.cVal;
-			}
-
-			else if(thePlayerCard.cVal.equals("fwild")){
-				gameColor = playerTurn[currentTurn].playedWildCard();
-				System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+		if(thePlayerCard.cVal.equals("flip")){
 			
-				inPlay = thePlayerCard;
-				inPlay.setColor(gameColor);
-				discard.add(inPlay);
-				gameVal = thePlayerCard.cVal;
-			}
+			isFlipped = true;
+			System.out.println("The game has been flipped to the back!");
 
-			else if(thePlayerCard.cVal.equals("draw1")){
-				victim = whoTurn(currentTurn);
-				playerTurn[victim].drawCard(dealCard());
-				System.out.println("Player Number " + victim + " drew 1 card!");
-				currentTurn = whoTurn(currentTurn);
-							
-				inPlay = thePlayerCard;
-				discard.add(inPlay);
-				gameColor = thePlayerCard.color;
-				gameVal = thePlayerCard.cVal;
-			}
-
-			
-			else if(thePlayerCard.cVal.equals("draw2")){
-				victim = whoTurn(currentTurn);
-				playerTurn[victim].drawCard(dealCard());
-				playerTurn[victim].drawCard(dealCard());
-				gameColor = playerTurn[currentTurn].playedWildCard();
-
-				System.out.println("Player Number " + victim + " drew 2 cards!");
-				System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
-				currentTurn = whoTurn(currentTurn);
-
-			
-				inPlay = thePlayerCard;
-				inPlay.setColor(gameColor);
-				discard.add(inPlay);
-				gameVal = thePlayerCard.cVal;
-
-			}
-
-			else {
 			inPlay = thePlayerCard;
 			discard.add(inPlay);
 			gameColor = thePlayerCard.color;
 			gameVal = thePlayerCard.cVal;
 		}
-	
-	
+
+		else if(thePlayerCard.cVal.equals("reverse")){
+			gameDirection *= -1;
+			System.out.println("Game direction has been reversed!");
+			if(playerCount == 2){
+				currentTurn = whoTurn(currentTurn);
+			}
+			
+			
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+
+		else if(thePlayerCard.cVal.equals("skip")){
+			victim = whoTurn(currentTurn);
+			System.out.println("Player Number " + victim + " has been skipped!");
+			currentTurn = whoTurn(currentTurn);
+
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+
+		else if(thePlayerCard.cVal.equals("fwild")){
+			gameColor = playerTurn[currentTurn].playedWildCard();
+			System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+		
+			inPlay = thePlayerCard;
+			inPlay.setColor(gameColor);
+			discard.add(inPlay);
+			gameVal = thePlayerCard.cVal;
+		}
+
+		else if(thePlayerCard.cVal.equals("draw1")){
+			victim = whoTurn(currentTurn);
+			playerTurn[victim].drawCard(dealCard());
+			System.out.println("Player Number " + victim + " drew 1 card!");
+			currentTurn = whoTurn(currentTurn);
+						
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+		
+		else if(thePlayerCard.cVal.equals("draw2")){
+			victim = whoTurn(currentTurn);
+			playerTurn[victim].drawCard(dealCard());
+			playerTurn[victim].drawCard(dealCard());
+			gameColor = playerTurn[currentTurn].playedWildCard();
+
+			System.out.println("Player Number " + victim + " drew 2 cards!");
+			System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
+			currentTurn = whoTurn(currentTurn);
+
+		
+			inPlay = thePlayerCard;
+			inPlay.setColor(gameColor);
+			discard.add(inPlay);
+			gameVal = thePlayerCard.cVal;
+
+		} else {
+
+			inPlay = thePlayerCard;
+			discard.add(inPlay);
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
+		}
+	}
 	
 		
 	
-	
-	} else {
+		private void activateBPlapCard(FlipCard thePlayerCard){
 			
 		if(thePlayerCard.bVal.equals("flip")){
 				
-			isFlipped = !isFlipped;
-			System.out.println("The game has been flipped!");
+			isFlipped = false;
+			System.out.println("The game has been flipped to the front!");
 
 			inPlay = thePlayerCard;
 			discard.add(inPlay);
@@ -287,7 +339,7 @@ public class GameBoard {
 		else if(thePlayerCard.bVal.equals("drawX")){
 			gameColor = playerTurn[currentTurn].playedWildCard();
 			System.out.println("Player Number " + currentTurn + " played a Draw X!");
-			System.out.println("Player Number " + currentTurn + " changed the.bColor to " + gameColor + "!");
+			System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
 
 			victim = whoTurn(currentTurn);
 
@@ -343,7 +395,7 @@ public class GameBoard {
 
 	
 		
-		}
+
 
 
 	}
@@ -381,20 +433,20 @@ public class GameBoard {
 	private void createDeck() {
 
 		//4 Draw2 Cards
-		deck.add(new FlipCard("draw2", "wild", "4", "orange"));
-		deck.add(new FlipCard("draw2", "wild", "3", "pink"));
-		deck.add(new FlipCard("draw2", "wild", "7", "orange"));
-		deck.add(new FlipCard("draw2", "wild", "9", "purple"));
+		deck.add(new FlipCard("draw2", "", "4", "orange"));
+		deck.add(new FlipCard("draw2", "", "3", "pink"));
+		deck.add(new FlipCard("draw2", "", "7", "orange"));
+		deck.add(new FlipCard("draw2", "", "9", "purple"));
 
 		//4 FWild Cards
-		deck.add(new FlipCard("fwild", "wild", "7", "purple"));
-		deck.add(new FlipCard("fwild", "wild", "flip", "pink"));
-		deck.add(new FlipCard("fwild", "wild", "5", "pink"));
-		deck.add(new FlipCard("fwild", "wild", "3", "lBlue"));
+		deck.add(new FlipCard("fwild", "", "7", "purple"));
+		deck.add(new FlipCard("fwild", "", "flip", "pink"));
+		deck.add(new FlipCard("fwild", "", "5", "pink"));
+		deck.add(new FlipCard("fwild", "", "3", "lBlue"));
 
 		//8 Flip Cards
 		deck.add(new FlipCard("flip", "green", "3", "lBlue"));
-		deck.add(new FlipCard("flip", "green", "drawX", "wild"));
+		deck.add(new FlipCard("flip", "green", "drawX", ""));
 		deck.add(new FlipCard("flip", "red", "8", "pink"));
 		deck.add(new FlipCard("flip", "red", "3", "purple"));
 		deck.add(new FlipCard("flip", "blue", "6", "purple"));
@@ -416,7 +468,7 @@ public class GameBoard {
 		deck.add(new FlipCard("skip", "green", "9", "orange"));
 		deck.add(new FlipCard("skip", "green", "4", "purple"));
 		deck.add(new FlipCard("skip", "red", "draw5", "orange"));
-		deck.add(new FlipCard("skip", "red", "bwild", "wild"));
+		deck.add(new FlipCard("skip", "red", "bwild", ""));
 		deck.add(new FlipCard("skip", "blue", "1", "lblue"));
 		deck.add(new FlipCard("skip", "blue", "9", "pink"));
 		deck.add(new FlipCard("skip", "yellow", "3", "orange"));
@@ -428,9 +480,9 @@ public class GameBoard {
 		deck.add(new FlipCard("reverse", "red", "7", "lblue"));
 		deck.add(new FlipCard("reverse", "red", "3", "purple"));
 		deck.add(new FlipCard("reverse", "blue", "4", "orange"));
-		deck.add(new FlipCard("reverse", "blue", "bwild", "wild"));
+		deck.add(new FlipCard("reverse", "blue", "bwild", ""));
 		deck.add(new FlipCard("reverse", "yellow", "flip", "lblue"));
-		deck.add(new FlipCard("reverse", "yellow", "bwild", "wild"));
+		deck.add(new FlipCard("reverse", "yellow", "bwild", ""));
 
 		//Number Cards
 		deck.add(new FlipCard("1", "green", "5", "orange"));
@@ -440,7 +492,7 @@ public class GameBoard {
 		deck.add(new FlipCard("1", "blue", "skipall", "purple"));
 		deck.add(new FlipCard("1", "blue", "skipall", "purple"));
 		deck.add(new FlipCard("1", "yellow", "skipall", "pink"));
-		deck.add(new FlipCard("1", "yellow", "bwild", "wild"));
+		deck.add(new FlipCard("1", "yellow", "bwild", ""));
 
 		deck.add(new FlipCard("2", "green", "skipall", "lblue"));
 		deck.add(new FlipCard("2", "green", "draw5", "lblue"));
@@ -453,7 +505,7 @@ public class GameBoard {
 		
 		deck.add(new FlipCard("3", "green", "flip", "pink"));
 		deck.add(new FlipCard("3", "green", "2", "purple"));
-		deck.add(new FlipCard("3", "red", "drawX", "wild"));
+		deck.add(new FlipCard("3", "red", "drawX", ""));
 		deck.add(new FlipCard("3", "red", "7", "pink"));
 		deck.add(new FlipCard("3", "blue", "2", "lblue"));
 		deck.add(new FlipCard("3", "blue", "8", "purple"));
@@ -479,13 +531,13 @@ public class GameBoard {
 		deck.add(new FlipCard("5", "yellow", "9", "purple"));
 
 		deck.add(new FlipCard("6", "green", "5", "pink"));
-		deck.add(new FlipCard("6", "green", "drawX", "wild"));
+		deck.add(new FlipCard("6", "green", "drawX", ""));
 		deck.add(new FlipCard("6", "red", "9", "orange"));
 		deck.add(new FlipCard("6", "red", "skipall", "pink"));
 		deck.add(new FlipCard("6", "blue", "skipall", "lblue"));
 		deck.add(new FlipCard("6", "blue", "reverse", "purple"));
 		deck.add(new FlipCard("6", "yellow", "skipall", "orange"));
-		deck.add(new FlipCard("6", "yellow", "drawX", "wild"));
+		deck.add(new FlipCard("6", "yellow", "drawX", ""));
 		
 		deck.add(new FlipCard("7", "green", "6", "orange"));
 		deck.add(new FlipCard("7", "green", "2", "lblue"));

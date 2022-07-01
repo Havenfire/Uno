@@ -20,7 +20,6 @@ public class RandomAgent extends Agent{
 		
 	}
 
-	//
 	public FlipCard playCard(String currentVal, String currentColor) {
 		formPlayableHand(currentVal, currentColor);
 		if(playableHand.size() == 0){
@@ -38,11 +37,6 @@ public class RandomAgent extends Agent{
 		return colors[(int)(Math.random()*4)];
 	}
 
-	public String playedBWildCard(){
-		return bColors[(int)(Math.random()*4)];
-	}
-
-	@Override
 	public void formPlayableHand(String curVal, String curColor) {
 		for(int i = 0; i < hand.size(); i++){
 			if(hand.get(i).cVal.equals(curVal) || hand.get(i).color.equals(curColor) || hand.get(i).color.equals("")){
@@ -50,14 +44,40 @@ public class RandomAgent extends Agent{
 				playableHand.add(hand.get(i));
 			}
 
-			if(hand.get(i).bVal.equals(curVal) || hand.get(i).bColor.equals(curColor) || hand.get(i).bColor.equals("")){
+		}
+
+	}
+
+
+	@Override
+	public FlipCard playBCard(String currentBVal, String currentBColor) {
+		formPlayableBHand(currentBVal, currentBColor);
+		if(playableHand.size() == 0){
+			return null;
+		}
+
+		FlipCard playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
+		hand.remove(hand.indexOf(playedCard));
+		playableHand.clear();
+
+		return playedCard;
+	}
+
+	public String playedBWildCard(){
+		return bColors[(int)(Math.random()*4)];
+	}
+
+	private void formPlayableBHand(String currentBVal, String currentBColor) {
+		for(int i = 0; i < hand.size(); i++){
+			if(hand.get(i).bVal.equals(currentBVal) || hand.get(i).bColor.equals(currentBColor) || hand.get(i).bColor.equals("")){
 			
 				playableHand.add(hand.get(i));
 			}
 
 		}
-
+	
 	}
+
 	
 	
 	

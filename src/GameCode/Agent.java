@@ -18,6 +18,7 @@ public abstract class Agent {
 	public abstract String playedBWildCard();
 
 	public abstract FlipCard playCard(String currentVal, String currentColor);
+	public abstract FlipCard playBCard(String currentBVal, String currentBColor);
 
 	public abstract void formPlayableHand(String currentVal, String currentColor);
 
