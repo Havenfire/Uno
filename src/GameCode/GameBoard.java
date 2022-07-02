@@ -19,6 +19,7 @@ public class GameBoard {
 	int currentTurn = Integer.MAX_VALUE;
 	int victim;
 	FlipCard inQuestion;
+	FlipCard infinityCard;
 	int numberOfTurns;
 	boolean isFlipped;
 	boolean goneInfinite;
@@ -77,6 +78,13 @@ public class GameBoard {
 
 			System.out.println("");
 			System.out.println("It is Player Number " + currentTurn + "'s Turn");
+
+			if(infinityCard != null){
+				gameOver = true;
+				goneInfinite = true;
+				break;
+			}
+
 			if(!isFlipped){
 				System.out.println(playerTurn[currentTurn].getHand());
 
@@ -91,7 +99,8 @@ public class GameBoard {
 					if(drawUntilPlayableRule){
 						while(playerCard == null){
 							playerTurn[currentTurn].drawCard(dealCard());
-							System.out.println("Player Number " + currentTurn + " drew a " + "card");
+							System.out.println("Player Number " + currentTurn + " drew a card");
+							System.out.println("That card was a " + playerTurn[currentTurn].hand.get(playerTurn[currentTurn].hand.size()-1));
 							playerCard = (playerTurn[currentTurn]).playCard(gameVal,gameColor);
 						}
 						activatePlapCard(playerCard);
@@ -110,8 +119,9 @@ public class GameBoard {
 						if(gameOver){
 							break;
 						}
-						System.out.println("Player Number " + currentTurn + " drew a " + "card");
-					
+						System.out.println("Player Number " + currentTurn + " drew a card");
+						System.out.println("That card was a " + playerTurn[currentTurn].hand.get(playerTurn[currentTurn].hand.size()-1));
+
 					}
 				} else {
 					//Plays a card
@@ -145,7 +155,9 @@ public class GameBoard {
 					if(drawUntilPlayableRule){
 						while(playerCard == null){
 							playerTurn[currentTurn].drawCard(dealCard());
-							System.out.println("Player Number " + currentTurn + " drew a " + "card");
+							System.out.println("Player Number " + currentTurn + " drew a card");
+							System.out.println("That card was a " + playerTurn[currentTurn].hand.get(playerTurn[currentTurn].hand.size()-1));
+
 							playerCard = (playerTurn[currentTurn]).playBCard(gameVal,gameColor);
 						}
 						activateBPlapCard(playerCard);
@@ -164,8 +176,9 @@ public class GameBoard {
 						if(gameOver){
 							break;
 						}
-						System.out.println("Player Number " + currentTurn + " drew a " + "card");
-					
+						System.out.println("Player Number " + currentTurn + " drew a card");
+						System.out.println("That card was a " + playerTurn[currentTurn].hand.get(playerTurn[currentTurn].hand.size()-1));
+
 					}
 				} else {
 					//Plays a card
@@ -188,7 +201,7 @@ public class GameBoard {
 
 		if(goneInfinite){
 			System.out.println("Game has gone infinite");
-			return -1;
+			return -23;
 		}
 
 		
@@ -204,10 +217,12 @@ public class GameBoard {
 			isFlipped = true;
 			System.out.println("The game has been flipped to the back!");
 
+
+
 			inPlay = thePlayerCard;
 			discard.add(inPlay);
-			gameColor = thePlayerCard.color;
-			gameVal = thePlayerCard.cVal;
+			gameColor = thePlayerCard.bColor;
+			gameVal = thePlayerCard.bVal;
 		}
 
 		else if(thePlayerCard.cVal.equals("reverse")){
@@ -293,8 +308,8 @@ public class GameBoard {
 
 			inPlay = thePlayerCard;
 			discard.add(inPlay);
-			gameColor = thePlayerCard.bColor;
-			gameVal = thePlayerCard.bVal;
+			gameColor = thePlayerCard.color;
+			gameVal = thePlayerCard.cVal;
 		}
 
 		else if(thePlayerCard.bVal.equals("reverse")){
@@ -337,7 +352,7 @@ public class GameBoard {
 
 
 		else if(thePlayerCard.bVal.equals("drawX")){
-			gameColor = playerTurn[currentTurn].playedWildCard();
+			gameColor = playerTurn[currentTurn].playedBWildCard();
 			System.out.println("Player Number " + currentTurn + " played a Draw X!");
 			System.out.println("Player Number " + currentTurn + " changed the color to " + gameColor + "!");
 
@@ -420,12 +435,17 @@ public class GameBoard {
 			System.out.println("DECK: " + deck);
 			System.out.println("DISCARD: " + deck);
 
+			if(deck.size() == 0 && discard.size() == 0){
+				gameOver = true;
+				goneInfinite = true;
+				infinityCard = new FlipCard("I", "Want","To" , "Die");
+				return infinityCard;
+			}
+
+			return dealCard();
 		}
 
-		if(deck.size() == 0 && discard.size() == 0){
-			gameOver = true;
-			return null;
-		}
+		
 
 		return null;
 	}

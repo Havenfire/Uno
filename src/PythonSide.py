@@ -14,12 +14,12 @@ for x in uno_data:
 
 max_data_list = max(data_list)
 bin_size = 25
-bin_list = []
+bin_list = [-25]
 
 for i in range(int(max_data_list/25)+2):
     bin_list.append(i*25)
     
-title = 'Uno Game of ' + str(uno_game.getPlayerCount()) + ' players (N = ' + str(uno_game.getDataCount()) + ')'
+title = 'Uno Flip Game of ' + str(uno_game.getPlayerCount()) + ' players (N = ' + str(uno_game.getDataCount()) + ')'
 plt.title(title)
 plt.xlabel('Number of Turns')
 plt.ylabel('Frequency')

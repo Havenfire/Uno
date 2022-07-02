@@ -5,7 +5,7 @@ public class UnoGameEntryPoint {
     
     UnoGame u;
     public UnoGameEntryPoint(){
-        u = new UnoGame(3, 5);
+        u = new UnoGame(3, 500);
     }
 
     public UnoGame getUnoGame(){
@@ -16,11 +16,8 @@ public class UnoGameEntryPoint {
         GatewayServer gatewayServer = new GatewayServer(new UnoGameEntryPoint());
         gatewayServer.start();
         System.out.println("Gateway Server Started");
-        
-
-        //TEST
-        UnoGame u = new UnoGame(3, 10);
-        u.runSimulation();
+        // UnoGame u = new UnoGame(3, 500);
+        // u.runSimulation();
     }
 
 }
