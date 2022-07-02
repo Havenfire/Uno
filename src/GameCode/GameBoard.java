@@ -43,7 +43,7 @@ public class GameBoard {
 	public void initialize(){
 		playerTurn = new Agent[playerCount];
 		for(int i = 0; i < playerCount; i++) {
-			RandomAgent r = new RandomAgent(i);
+			DrawAgent r = new DrawAgent(i);
 			playerTurn[i] = r;			
 		}
 		gameDirection = 1;
