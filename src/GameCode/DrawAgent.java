@@ -7,6 +7,7 @@ public class DrawAgent extends Agent{
 	int playerNum;
 	ArrayList<FlipCard> playableHand = new ArrayList<FlipCard>();
 	ArrayList<FlipCard> heldHand = new ArrayList<FlipCard>();
+	FlipCard playedCard;
 
 	DrawAgent(int newPlayerNum){
 		playerNum = newPlayerNum;
@@ -28,7 +29,7 @@ public class DrawAgent extends Agent{
 			return null;
 		}
 
-		FlipCard playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
+		playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
 		hand.remove(hand.indexOf(playedCard));
 		playableHand.clear();
 		heldHand.clear();
@@ -55,7 +56,8 @@ public class DrawAgent extends Agent{
 
 		}
 		if(heldHand.size() > 0){
-			playableHand = heldHand;
+			playableHand.clear();
+			playableHand.addAll(heldHand);
 			heldHand.clear();
 		}
 	}
@@ -68,7 +70,7 @@ public class DrawAgent extends Agent{
 			return null;
 		}
 
-		FlipCard playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
+		playedCard = playableHand.remove((int)(Math.random()*playableHand.size()));
 		hand.remove(hand.indexOf(playedCard));
 		playableHand.clear();
 		heldHand.clear();
@@ -94,7 +96,8 @@ public class DrawAgent extends Agent{
 
 		}
 		if(heldHand.size() > 0){
-			playableHand = heldHand;
+			playableHand.clear();
+			playableHand.addAll(heldHand);
 			heldHand.clear();
 		}
 	

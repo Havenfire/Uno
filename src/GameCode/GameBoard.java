@@ -201,7 +201,7 @@ public class GameBoard {
 
 		if(goneInfinite){
 			System.out.println("Game has gone infinite");
-			return -23;
+			return -25;
 		}
 
 		
@@ -363,8 +363,13 @@ public class GameBoard {
 			while(!endDraw){
 				playerTurn[victim].drawCard(dealCard());
 				colorCheck = playerTurn[victim].hand.get(playerTurn[victim].hand.size()-1).bColor;
+				if((playerTurn[victim].hand.get(playerTurn[victim].hand.size()-1).equals(infinityCard))){
+					break;
+				}
+
 				System.out.println("ColorCheck: " + colorCheck);
 				System.out.println("Game Color: " + gameColor);
+				
 
 				if(colorCheck == gameColor){
 					System.out.println("Player Number " + victim + " can stop drawing!");
@@ -422,26 +427,17 @@ public class GameBoard {
 			return inQuestion;
 		}
 
-		
+		if(deck.size() == 0 && discard.size() == 1){
+			gameOver = true;
+			goneInfinite = true;
+			infinityCard = new FlipCard("I", "Want","To" , "Die");
+			return infinityCard;
+		}
+	
 
 		if(deck.size() == 0){
 			shuffleDeck();
 			System.out.println("Deck has been shuffled");
-			System.out.println(playerTurn[currentTurn].getHand());
-			System.out.println(playerTurn[whoTurn(currentTurn)].getHand());
-			System.out.println(playerTurn[whoTurn(whoTurn(currentTurn))].getHand());
-
-
-			System.out.println("DECK: " + deck);
-			System.out.println("DISCARD: " + deck);
-
-			if(deck.size() == 0 && discard.size() == 0){
-				gameOver = true;
-				goneInfinite = true;
-				infinityCard = new FlipCard("I", "Want","To" , "Die");
-				return infinityCard;
-			}
-
 			return dealCard();
 		}
 

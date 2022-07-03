@@ -5,7 +5,7 @@ public class UnoGameEntryPoint {
     
     UnoGame u;
     public UnoGameEntryPoint(){
-        u = new UnoGame(3, 500);
+        u = new UnoGame(4, 500);
     }
 
     public UnoGame getUnoGame(){
@@ -17,8 +17,8 @@ public class UnoGameEntryPoint {
         gatewayServer.start();
         System.out.println("Gateway Server Started");
         
-        UnoGame u = new UnoGame(3, 500);
-        u.runSimulation();
+        // UnoGame u = new UnoGame(3, 200);
+        // u.runSimulation();
     }
 
 }
