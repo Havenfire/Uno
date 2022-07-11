@@ -14,7 +14,7 @@ public class GameBoard {
 	boolean gameOver = false;
 	String gameColor;
 	String gameVal;
-	
+	int turnCounter;
 	
 	GameBoard(int newPlayerCount){
 		if(newPlayerCount > 8 || newPlayerCount < 2) {
@@ -45,16 +45,11 @@ public class GameBoard {
 		Card playerCard;
 
 		while(!gameOver) {
-
+			turnCounter++;
 			//all players take a turn
 			for(int i = 0; i < playerCount; i++) {
 
-				//checks if a player has won
-				if(playerTurn[i].hand.size() == 0) {
-					gameOver = true;
-					System.out.println("Player Number " + i + " has won!");
-					break;
-				}
+				
 				System.out.println(playerTurn[i].getHand());
 
 				//player plays a card OR draws
@@ -65,6 +60,8 @@ public class GameBoard {
 				if(playerCard == null){
 					playerTurn[i].drawCard(dealCard());
 					System.out.println("Player Number " + i + " drew a " + "card");
+					
+
 					if(deck.size() == 0){
 						shuffleDeck();
 						System.out.println("Deck has been shuffled");
@@ -77,6 +74,15 @@ public class GameBoard {
 					discard.add(inPlay);
 					gameColor = playerCard.color;
 					gameVal = playerCard.cVal;
+				
+				
+					//checks if a player has won
+					if(playerTurn[i].hand.size() == 0) {
+						gameOver = true;
+						System.out.println("Player Number " + i + " has won!");
+						System.out.println("This game lasted: " + turnCounter + " turns");
+						break;
+					}
 				}
 
 			}
